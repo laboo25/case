@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [inputText, setInputText] = useState('');
+  const [inputText1, setInputText1] = useState('');
+  const [inputText2, setInputText2] = useState('');
   const [message, setMessage] = useState('');
   const [buttonClicked, setButtonClicked] = useState({
     copy1: false,
@@ -15,32 +16,47 @@ function App() {
   });
 
   useEffect(() => {
-    const savedText = localStorage.getItem('inputText');
-    if (savedText) {
-      setInputText(savedText);
+    const savedText1 = localStorage.getItem('inputText1');
+    const savedText2 = localStorage.getItem('inputText2');
+    
+    if (savedText1) {
+      setInputText1(savedText1);
+    }
+
+    if (savedText2) {
+      setInputText2(savedText2);
     }
   }, []); // Empty dependency array ensures this effect only runs once, on component mount
 
-  const handleInputChange = (event) => {
-    const newText = event.target.value;
-    setInputText(newText);
-    localStorage.setItem('inputText', newText); // Save input text to local storage
+  const handleInputChange1 = (event) => {
+    const newText1 = event.target.value;
+    setInputText1(newText1);
+    localStorage.setItem('inputText1', newText1); // Save input text to local storage
+  };
+
+  const handleInputChange2 = (event) => {
+    const newText2 = event.target.value;
+    setInputText2(newText2);
+    localStorage.setItem('inputText2', newText2); // Save input text to local storage
   };
 
   const convertToUpperCase = () => {
-    setInputText(inputText.toUpperCase());
+    setInputText1(inputText1.toUpperCase());
+    setInputText2(inputText2.toUpperCase());
   };
 
   const convertToLowerCase = () => {
-    setInputText(inputText.toLowerCase());
+    setInputText1(inputText1.toLowerCase());
+    setInputText2(inputText2.toLowerCase());
   };
 
   const convertToTitleCase = () => {
-    setInputText(inputText.replace(/\b\w/g, (char) => char.toUpperCase()));
+    setInputText1(inputText1.replace(/\b\w/g, (char) => char.toUpperCase()));
+    setInputText2(inputText2.replace(/\b\w/g, (char) => char.toUpperCase()));
   };
 
   const handleCopy = (buttonName) => {
-    navigator.clipboard.writeText(inputText); // Copy input text to clipboard
+    navigator.clipboard.writeText(inputText1); // Copy input text to clipboard
     setMessage('Text copied!');
     setTimeout(() => {
       setMessage('');
@@ -59,42 +75,26 @@ function App() {
     }, 200); // Reset button click effect after 200ms
   };
 
-  const handlePaste = async () => {
-    const textFromClipboard = await navigator.clipboard.readText(); // Read text from clipboard
-    setInputText(textFromClipboard);
-    localStorage.setItem('inputText', textFromClipboard); // Save pasted text to local storage
-    setMessage('Text pasted!');
-    setTimeout(() => {
-      setMessage('');
-    }, 3000); // Hide message after 3 seconds
-  };
+  const renderCopyButton = (buttonName, labelText) => (
+    <div>
+      <h2 style={{ margin: '0 10px', fontSize: '24px' }}>{labelText}</h2>
+      <button onClick={() => handleCopy(buttonName)} style={{ ...buttonStyle, backgroundColor: buttonClicked[buttonName] ? 'green' : '#007bff' }}>Copy</button>
+    </div>
+  );
 
   return (
     <div style={{ width: '100%', height: '100vh', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <div>
-          <h2 style={{ margin: '0 10px', fontSize: '24px' }}>●</h2>
-          <button onClick={() => handleCopy('copy1')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy1 ? 'green' : '#007bff' }}>Copy</button>
-        </div>
-        <div>
-          <h2 style={{ margin: '0 10px', fontSize: '24px' }}>BLACKED</h2>
-          <button onClick={() => handleCopy('copy2')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy2 ? 'green' : '#007bff' }}>Copy</button>
-        </div>
-        <div>
-          <h2 style={{ margin: '0 10px', fontSize: '24px' }}>TUSHY</h2>
-          <button onClick={() => handleCopy('copy3')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy3 ? 'green' : '#007bff' }}>Copy</button>
-        </div>
+        {renderCopyButton('copy1', '●')}
+        {renderCopyButton('copy2', 'BLACKED')}
+        {renderCopyButton('copy3', 'TUSHY')}
       </div>
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-        <div>
-          <button onClick={() => handleCopy('copy4')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy4 ? 'green' : '#007bff' }}>Copy inputted text</button>
-        </div>
-      </div>
-      
+      {renderCopyButton('copy4', 'Copy inputted text')}
+
       <input
         type="text"
-        value={inputText}
-        onChange={handleInputChange}
+        value={inputText1}
+        onChange={handleInputChange1}
         style={{
           margin: '10px',
           padding: '5px',
@@ -104,25 +104,11 @@ function App() {
           marginRight: 'auto',
         }}
       />
-      
-      <div>
-        <button onClick={() => handleCopy('uppercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPERe</button>
-        <button onClick={() => handleCopy('lowercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        <button onClick={() => handleCopy('titlecase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
-      </div>
-      <div style={{ position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', display: message ? 'block' : 'none' }}>
-        <p style={{ margin: '0', color: 'green' }}>{message}</p>
-      </div>
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-        <div>
-          <button onClick={() => handleCopy('copy4')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy4 ? 'green' : '#007bff' }}>Copy inputted text</button>
-        </div>
-      </div>
-      
+
       <input
         type="text"
-        value={inputText}
-        onChange={handleInputChange}
+        value={inputText2}
+        onChange={handleInputChange2}
         style={{
           margin: '10px',
           padding: '5px',
@@ -132,11 +118,11 @@ function App() {
           marginRight: 'auto',
         }}
       />
-      
+
       <div>
-        <button onClick={() => handleCopy('uppercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPERe</button>
-        <button onClick={() => handleCopy('lowercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        <button onClick={() => handleCopy('titlecase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
+        <button onClick={convertToUpperCase} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPERe</button>
+        <button onClick={convertToLowerCase} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
+        <button onClick={convertToTitleCase} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
       </div>
       <div style={{ position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', display: message ? 'block' : 'none' }}>
         <p style={{ margin: '0', color: 'green' }}>{message}</p>
@@ -157,3 +143,4 @@ const buttonStyle = {
 };
 
 export default App;
+        
