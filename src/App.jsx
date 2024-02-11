@@ -90,7 +90,7 @@ function App() {
           <button onClick={() => handleCopy('copy4')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy4 ? 'green' : '#007bff' }}>Copy inputted text</button>
         </div>
       </div>
-      <br />
+      
       <input
         type="text"
         value={inputText}
@@ -104,7 +104,7 @@ function App() {
           marginRight: 'auto',
         }}
       />
-      <br />
+      
       <div>
         <button onClick={() => handleCopy('uppercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPERe</button>
         <button onClick={() => handleCopy('lowercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
@@ -118,7 +118,7 @@ function App() {
           <button onClick={() => handleCopy('copy4')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy4 ? 'green' : '#007bff' }}>Copy inputted text</button>
         </div>
       </div>
-      <br />
+      
       <input
         type="text"
         value={inputText}
@@ -132,7 +132,7 @@ function App() {
           marginRight: 'auto',
         }}
       />
-      <br />
+      
       <div>
         <button onClick={() => handleCopy('uppercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPERe</button>
         <button onClick={() => handleCopy('lowercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
