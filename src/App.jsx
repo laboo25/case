@@ -56,7 +56,8 @@ function App() {
   };
 
   const handleCopy = (buttonName) => {
-    navigator.clipboard.writeText(inputText1); // Copy input text to clipboard
+    const textToCopy = buttonName === 'copy1' ? inputText1 : inputText2;
+    navigator.clipboard.writeText(textToCopy); // Copy input text to clipboard
     setMessage('Text copied!');
     setTimeout(() => {
       setMessage('');
@@ -143,4 +144,4 @@ const buttonStyle = {
 };
 
 export default App;
-        
+      
