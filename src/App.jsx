@@ -113,6 +113,34 @@ function App() {
       <div style={{ position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', display: message ? 'block' : 'none' }}>
         <p style={{ margin: '0', color: 'green' }}>{message}</p>
       </div>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+        <div>
+          <button onClick={() => handleCopy('copy4')} style={{ ...buttonStyle, backgroundColor: buttonClicked.copy4 ? 'green' : '#007bff' }}>Copy inputted text</button>
+        </div>
+      </div>
+      <br />
+      <input
+        type="text"
+        value={inputText}
+        onChange={handleInputChange}
+        style={{
+          margin: '10px',
+          padding: '5px',
+          width: '100%',
+          display: 'block',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+      />
+      <br />
+      <div>
+        <button onClick={() => handleCopy('uppercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPERe</button>
+        <button onClick={() => handleCopy('lowercase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
+        <button onClick={() => handleCopy('titlecase')} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
+      </div>
+      <div style={{ position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', display: message ? 'block' : 'none' }}>
+        <p style={{ margin: '0', color: 'green' }}>{message}</p>
+      </div>
     </div>
   );
 }
