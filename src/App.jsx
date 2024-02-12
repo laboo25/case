@@ -40,18 +40,27 @@ function App() {
     localStorage.setItem('inputText2', newText2); // Save input text to local storage
   };
 
-  const convertToUpperCase = () => {
+  const convertToUpperCase1 = () => {
     setInputText1(inputText1.toUpperCase());
+  };
+
+  const convertToUpperCase2 = () => {
     setInputText2(inputText2.toUpperCase());
   };
 
-  const convertToLowerCase = () => {
+  const convertToLowerCase1 = () => {
     setInputText1(inputText1.toLowerCase());
+  };
+
+  const convertToLowerCase2 = () => {
     setInputText2(inputText2.toLowerCase());
   };
 
-  const convertToTitleCase = () => {
+  const convertToTitleCase1 = () => {
     setInputText1(inputText1.replace(/\b\w/g, (char) => char.toUpperCase()));
+  };
+
+  const convertToTitleCase2 = () => {
     setInputText2(inputText2.replace(/\b\w/g, (char) => char.toUpperCase()));
   };
 
@@ -121,9 +130,12 @@ function App() {
       />
 
       <div>
-        <button onClick={convertToUpperCase} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPERe</button>
-        <button onClick={convertToLowerCase} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        <button onClick={convertToTitleCase} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
+        <button onClick={convertToUpperCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPER (1)</button>
+        <button onClick={convertToUpperCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPER (2)</button>
+        <button onClick={convertToLowerCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase (1)</button>
+        <button onClick={convertToLowerCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase (2)</button>
+        <button onClick={convertToTitleCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case (1)</button>
+        <button onClick={convertToTitleCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case (2)</button>
       </div>
       <div style={{ position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', display: message ? 'block' : 'none' }}>
         <p style={{ margin: '0', color: 'green' }}>{message}</p>
@@ -144,4 +156,3 @@ const buttonStyle = {
 };
 
 export default App;
-      
