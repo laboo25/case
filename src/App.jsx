@@ -64,39 +64,38 @@ function App() {
     setInputText2(inputText2.replace(/\b\w/g, (char) => char.toUpperCase()));
   };
 
-  const handleCopy = (buttonName) => {
-    const textToCopy = buttonName === 'copy1' ? inputText1 : inputText2;
-    navigator.clipboard.writeText(textToCopy); // Copy input text to clipboard
-    setMessage('Text copied!');
+  const handleCopy1 = () => {
+    navigator.clipboard.writeText(inputText1);
+    setMessage('Text from input 1 copied!');
+    setButtonClicked((prevState) => ({ ...prevState, copy1: true }));
     setTimeout(() => {
       setMessage('');
-    }, 3000); // Hide message after 3 seconds
-
-    setButtonClicked((prevState) => ({
-      ...prevState,
-      [buttonName]: true,
-    }));
-
-    setTimeout(() => {
-      setButtonClicked((prevState) => ({
-        ...prevState,
-        [buttonName]: false,
-      }));
-    }, 200); // Reset button click effect after 200ms
+      setButtonClicked((prevState) => ({ ...prevState, copy1: false }));
+    }, 200);
   };
 
-  const renderCopyButton = (buttonName, labelText) => (
+  const handleCopy2 = () => {
+    navigator.clipboard.writeText(inputText2);
+    setMessage('Text from input 2 copied!');
+    setButtonClicked((prevState) => ({ ...prevState, copy2: true }));
+    setTimeout(() => {
+      setMessage('');
+      setButtonClicked((prevState) => ({ ...prevState, copy2: false }));
+    }, 200);
+  };
+
+  const renderCopyButton = (buttonName, labelText, copyHandler) => (
     <div>
       <h2 style={{ margin: '0 10px', fontSize: '24px' }}>{labelText}</h2>
-      <button onClick={() => handleCopy(buttonName)} style={{ ...buttonStyle, backgroundColor: buttonClicked[buttonName] ? 'green' : '#007bff' }}>Copy</button>
+      <button onClick={copyHandler} style={{ ...buttonStyle, backgroundColor: buttonClicked[buttonName] ? 'green' : '#007bff' }}>Copy</button>
     </div>
   );
 
   return (
     <div style={{ width: '100%', height: '100vh', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        {renderCopyButton('copy1', '●')}
-        {renderCopyButton('copy2', 'BLACKED')}
+        {renderCopyButton('copy1', 'Copy input 1 text', handleCopy1)}
+        {renderCopyButton('copy2', 'Copy input 2 text', handleCopy2)}
         {renderCopyButton('copy3', 'TUSHY')}
       </div>
       {renderCopyButton('copy4', 'Copy inputted text')}
@@ -116,11 +115,8 @@ function App() {
       />
        <div>
         <button onClick={convertToUpperCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPER</button>
-        
         <button onClick={convertToLowerCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        
         <button onClick={convertToTitleCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
-        
       </div>
       <input
         type="text"
@@ -136,7 +132,7 @@ function App() {
         }}
       />
        <div>
-      <button onClick={convertToUpperCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPER</button>
+        <button onClick={convertToUpperCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPER</button>
         <button onClick={convertToLowerCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
         <button onClick={convertToTitleCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
       </div>
