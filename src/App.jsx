@@ -9,7 +9,6 @@ function App() {
     copy2: false,
     copy3: false,
     copy4: false,
-    // paste: false,
     uppercase1: false,
     lowercase1: false,
     titlecase1: false,
@@ -80,7 +79,7 @@ function App() {
     setTimeout(() => {
       setMessage('');
       setButtonClicked((prevState) => ({ ...prevState, copy1: false }));
-    }, 200);
+    }, 500);
   };
 
   const handleCopy2 = () => {
@@ -90,7 +89,7 @@ function App() {
     setTimeout(() => {
       setMessage('');
       setButtonClicked((prevState) => ({ ...prevState, copy2: false }));
-    }, 200);
+    }, 500);
   };
 
   const handleCopy4 = () => {
@@ -101,13 +100,12 @@ function App() {
     setTimeout(() => {
       setMessage('');
       setButtonClicked((prevState) => ({ ...prevState, copy4: false }));
-    }, 200);
+    }, 500);
   };
 
-  const renderCopyButton = (buttonName, labelText, copyHandler) => (
+  const renderCopyButton = (buttonName, buttonText, copyHandler) => (
     <div>
-      <h2 style={{ margin: '0 10px', fontSize: '24px' }}>{labelText}</h2>
-      <button onClick={copyHandler} style={{ ...buttonStyle, backgroundColor: buttonClicked[buttonName] ? 'green' : '#007bff' }}>Copy</button>
+      <button onClick={copyHandler} style={{ ...buttonStyle, backgroundColor: buttonClicked[buttonName] ? 'green' : '#007bff' }}>{buttonText}</button>
     </div>
   );
 
