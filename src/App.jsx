@@ -9,7 +9,7 @@ function App() {
     copy2: false,
     copy3: false,
     copy4: false,
-    paste: false,
+    // paste: false,
     uppercase1: false,
     lowercase1: false,
     titlecase1: false,
@@ -74,8 +74,8 @@ function App() {
   };
 
   const handleCopy1 = () => {
-    navigator.clipboard.writeText(inputText1);
-    setMessage('Text from input 1 copied!');
+    navigator.clipboard.writeText(' ● ');
+    setMessage('Text "hello" copied!');
     setButtonClicked((prevState) => ({ ...prevState, copy1: true }));
     setTimeout(() => {
       setMessage('');
@@ -84,7 +84,7 @@ function App() {
   };
 
   const handleCopy2 = () => {
-    navigator.clipboard.writeText(inputText2);
+    navigator.clipboard.writeText('BLACKED');
     setMessage('Text from input 2 copied!');
     setButtonClicked((prevState) => ({ ...prevState, copy2: true }));
     setTimeout(() => {
