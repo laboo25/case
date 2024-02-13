@@ -93,6 +93,17 @@ function App() {
     }, 200);
   };
 
+  const handleCopy4 = () => {
+    const allText = inputText1 + ' ' + inputText2;
+    navigator.clipboard.writeText(allText);
+    setMessage('Text from inputs 1 and 2 copied!');
+    setButtonClicked((prevState) => ({ ...prevState, copy4: true }));
+    setTimeout(() => {
+      setMessage('');
+      setButtonClicked((prevState) => ({ ...prevState, copy4: false }));
+    }, 200);
+  };
+
   const renderCopyButton = (buttonName, labelText, copyHandler) => (
     <div>
       <h2 style={{ margin: '0 10px', fontSize: '24px' }}>{labelText}</h2>
@@ -107,7 +118,7 @@ function App() {
         {renderCopyButton('copy2', 'BLACKED', handleCopy2)}
         {renderCopyButton('copy3', 'TUSHY')}
       </div>
-      {renderCopyButton('copy4', 'Copy inputted text')}
+      {renderCopyButton('copy4', 'Copy inputted text', handleCopy4)}
 
       <input
         type="text"
