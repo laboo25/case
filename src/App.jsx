@@ -10,9 +10,12 @@ function App() {
     copy3: false,
     copy4: false,
     paste: false,
-    uppercase: false,
-    lowercase: false,
-    titlecase: false,
+    uppercase1: false,
+    lowercase1: false,
+    titlecase1: false,
+    uppercase2: false,
+    lowercase2: false,
+    titlecase2: false,
   });
 
   useEffect(() => {
@@ -42,26 +45,32 @@ function App() {
 
   const convertToUpperCase1 = () => {
     setInputText1(inputText1.toUpperCase());
+    setButtonClicked((prevState) => ({ ...prevState, uppercase1: true }));
   };
 
   const convertToUpperCase2 = () => {
     setInputText2(inputText2.toUpperCase());
+    setButtonClicked((prevState) => ({ ...prevState, uppercase2: true }));
   };
 
   const convertToLowerCase1 = () => {
     setInputText1(inputText1.toLowerCase());
+    setButtonClicked((prevState) => ({ ...prevState, lowercase1: true }));
   };
 
   const convertToLowerCase2 = () => {
     setInputText2(inputText2.toLowerCase());
+    setButtonClicked((prevState) => ({ ...prevState, lowercase2: true }));
   };
 
   const convertToTitleCase1 = () => {
     setInputText1(inputText1.replace(/\b\w/g, (char) => char.toUpperCase()));
+    setButtonClicked((prevState) => ({ ...prevState, titlecase1: true }));
   };
 
   const convertToTitleCase2 = () => {
     setInputText2(inputText2.replace(/\b\w/g, (char) => char.toUpperCase()));
+    setButtonClicked((prevState) => ({ ...prevState, titlecase2: true }));
   };
 
   const handleCopy1 = () => {
@@ -94,8 +103,8 @@ function App() {
   return (
     <div style={{ width: '100%', height: '100vh', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        {renderCopyButton('copy1', 'Copy input 1 text', handleCopy1)}
-        {renderCopyButton('copy2', 'Copy input 2 text', handleCopy2)}
+        {renderCopyButton('copy1', ' ● ', handleCopy1)}
+        {renderCopyButton('copy2', 'BLACKED', handleCopy2)}
         {renderCopyButton('copy3', 'TUSHY')}
       </div>
       {renderCopyButton('copy4', 'Copy inputted text')}
@@ -114,9 +123,9 @@ function App() {
         }}
       />
        <div>
-        <button onClick={convertToUpperCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPER</button>
-        <button onClick={convertToLowerCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        <button onClick={convertToTitleCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
+        <button onClick={convertToUpperCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase1 ? 'green' : '#007bff' }}>Convert to UPPER</button>
+        <button onClick={convertToLowerCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase1 ? 'green' : '#007bff' }}>Convert to lowercase</button>
+        <button onClick={convertToTitleCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase1 ? 'green' : '#007bff' }}>Convert to Title Case</button>
       </div>
       <input
         type="text"
@@ -132,9 +141,9 @@ function App() {
         }}
       />
        <div>
-        <button onClick={convertToUpperCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase ? 'green' : '#007bff' }}>Convert to UPPER</button>
-        <button onClick={convertToLowerCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        <button onClick={convertToTitleCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase ? 'green' : '#007bff' }}>Convert to Title Case</button>
+        <button onClick={convertToUpperCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase2 ? 'green' : '#007bff' }}>Convert to UPPER</button>
+        <button onClick={convertToLowerCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase2 ? 'green' : '#007bff' }}>Convert to lowercase</button>
+        <button onClick={convertToTitleCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase2 ? 'green' : '#007bff' }}>Convert to Title Case</button>
       </div>
       
       <div style={{ position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', display: message ? 'block' : 'none' }}>
