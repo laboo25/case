@@ -1,0 +1,20 @@
+{
+  "name": "case convert",
+  "short_name": "cc",
+  "icons": [
+    {
+      "src": "https://github.com/laboo25/case/blob/main/src/assets/react.svg",
+      "sizes": "192x192",
+      "type": "image/svg"
+    },
+    {
+      "src": "https://github.com/laboo25/case/blob/main/src/assets/react.svg",
+      "sizes": "512x512",
+      "type": "image/svg"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}
