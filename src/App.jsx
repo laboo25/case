@@ -123,12 +123,13 @@ function App() {
   onChange={handleInputChange1}
   style={{
     margin: '10px',
-    padding: '5px',
+    padding: '10px',
     width: '100%',
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto',
     fontSize: '30px',
+    fontWeight: 'bold',
   }}
 />
 
