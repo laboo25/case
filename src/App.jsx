@@ -128,7 +128,7 @@ function App() {
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto',
-    fontSize: '30px',
+    fontSize: '25px',
     fontWeight: 'bold',
   }}
 />
