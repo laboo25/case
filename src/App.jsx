@@ -118,19 +118,19 @@ function App() {
       </div>
       {renderCopyButton('copy4', 'Copy inputted text', handleCopy4)}
 
-      <input
-        type="text"
-        value={inputText1}
-        onChange={handleInputChange1}
-        style={{
-          margin: '10px',
-          padding: '5px',
-          width: '100%',
-          display: 'block',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
-      />
+      <textarea
+  value={inputText1}
+  onChange={handleInputChange1}
+  style={{
+    margin: '10px',
+    padding: '5px',
+    width: '100%',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  }}
+/>
+
        <div>
         <button onClick={convertToUpperCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase1 ? 'green' : '#007bff' }}>Convert to UPPER</button>
         <button onClick={convertToLowerCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase1 ? 'green' : '#007bff' }}>Convert to lowercase</button>
