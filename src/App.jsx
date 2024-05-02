@@ -44,9 +44,15 @@ function App() {
     }, 500);
   };
 
-  const renderCopyButton = (text, buttonText, copyHandler) => (
+  const renderCopyButton = (text, buttonText) => (
     <div>
       <button onClick={() => handleCopy(text)} style={{ ...buttonStyle, backgroundColor: buttonClicked[text] ? 'green' : '#007bff' }}>{buttonText}</button>
+    </div>
+  );
+
+  const renderCaseButtons = (buttonName, buttonText) => (
+    <div>
+      <button onClick={() => convertCase(inputText1, setInputText1, buttonText === 'Convert to UPPER' ? text => text.toUpperCase() : buttonText === 'Convert to lowercase' ? text => text.toLowerCase() : text => text.replace(/\b\w/g, char => char.toUpperCase()))} style={{ ...buttonStyle, backgroundColor: buttonClicked[buttonName] ? 'green' : '#007bff' }}>{buttonText}</button>
     </div>
   );
 
