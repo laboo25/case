@@ -1,178 +1,272 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+import "./App.css";
+import Toast from "./Toast";
+import StarNameModal from "./StarNameModal";
+import { FaCopy } from "react-icons/fa6";
+import { BsAlphabetUppercase } from "react-icons/bs";
+import { PiClipboardTextFill } from "react-icons/pi";
 
-function App() {
-  const [inputText1, setInputText1] = useState('');
-  const [inputText2, setInputText2] = useState('');
-  const [message, setMessage] = useState('');
-  const [buttonClicked, setButtonClicked] = useState({
-    copy1: false,
-    copy2: false,
-    copy3: false,
-    copy4: false,
-    uppercase1: false,
-    lowercase1: false,
-    titlecase1: false,
-    uppercase2: false,
-    lowercase2: false,
-    titlecase2: false,
-  });
+export default function App() {
+  const [channel, setChannel] = useState("");
+  const [title, setTitle] = useState("");
+  const [star, setStar] = useState("");
+  const [converterInput, setConverterInput] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(
+    JSON.parse(localStorage.getItem("isModalOpen")) || false
+  );
+  const converterInputRef = useRef(null);
 
   useEffect(() => {
-    const savedText1 = localStorage.getItem('inputText1');
-    const savedText2 = localStorage.getItem('inputText2');
-    
-    if (savedText1) {
-      setInputText1(savedText1);
+    const savedChannel = localStorage.getItem("channel");
+    const savedTitle = localStorage.getItem("title");
+    const savedStar = localStorage.getItem("star");
+    const savedConverterInput = localStorage.getItem("converterInput");
+
+    if (savedChannel) setChannel(savedChannel);
+    if (savedTitle) setTitle(savedTitle);
+    if (savedStar) setStar(savedStar);
+    if (savedConverterInput) setConverterInput(savedConverterInput);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("channel", channel);
+  }, [channel]);
+
+  useEffect(() => {
+    localStorage.setItem("title", title);
+  }, [title]);
+
+  useEffect(() => {
+    localStorage.setItem("star", star);
+  }, [star]);
+
+  useEffect(() => {
+    localStorage.setItem("converterInput", converterInput);
+  }, [converterInput]);
+
+  useEffect(() => {
+    localStorage.setItem("isModalOpen", isModalOpen);
+  }, [isModalOpen]);
+
+  const handleCopy = (text) => {
+    const trimmedText = text
+      .split("●")
+      .map((s) => s.trim())
+      .join(" ● ");
+    navigator.clipboard.writeText(trimmedText);
+    setToastMessage("Text copied!");
+  };
+
+  const handleCopyConverterInput = () => {
+    navigator.clipboard.writeText(converterInput);
+    setToastMessage("Converter input copied!");
+  };
+
+  const handlePasteConverterInput = async () => {
+    const text = await navigator.clipboard.readText();
+    setConverterInput(text);
+    setToastMessage("Text pasted!");
+  };
+
+  const handleChannelChange = (e) => {
+    setChannel(e.target.value);
+  };
+
+  const handleTitleChange = (e) => {
+    setTitle(capitalizeWords(e.target.value));
+  };
+
+  const handleStarChange = (e) => {
+    setStar(e.target.value);
+  };
+
+  const capitalizeWords = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/(^\w|\s\w)/g, (match) => match.toUpperCase());
+  };
+
+  const handleUppercaseChannel = () => {
+    setChannel(channel.toUpperCase());
+  };
+
+  const handleUppercaseStar = () => {
+    setStar(star.toUpperCase());
+  };
+
+  const handleConverterInputChange = (e) => {
+    setConverterInput(e.target.value);
+  };
+
+  const getSelectedTextInfo = () => {
+    const input = converterInputRef.current;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    return { start, end, selectedText: input.value.substring(start, end) };
+  };
+
+  const replaceSelectedText = (replacement) => {
+    const input = converterInputRef.current;
+    const { start, end } = getSelectedTextInfo();
+    const newText = converterInput.slice(0, start) + replacement + converterInput.slice(end);
+    setConverterInput(newText);
+    input.setSelectionRange(start, start + replacement.length);
+  };
+
+  const handleUppercaseConverter = () => {
+    const { selectedText, start, end } = getSelectedTextInfo();
+    if (start === end) { // No text selected
+      setConverterInput(converterInput.toUpperCase());
+    } else {
+      replaceSelectedText(selectedText.toUpperCase());
     }
+  };
 
-    if (savedText2) {
-      setInputText2(savedText2);
+  const handleCapitalizeConverter = () => {
+    const { selectedText, start, end } = getSelectedTextInfo();
+    if (start === end) { // No text selected
+      setConverterInput(capitalizeWords(converterInput));
+    } else {
+      replaceSelectedText(capitalizeWords(selectedText));
     }
-  }, []); // Empty dependency array ensures this effect only runs once, on component mount
-
-  const handleInputChange1 = (event) => {
-    const newText1 = event.target.value;
-    setInputText1(newText1);
-    localStorage.setItem('inputText1', newText1); // Save input text to local storage
   };
 
-  const handleInputChange2 = (event) => {
-    const newText2 = event.target.value;
-    setInputText2(newText2);
-    localStorage.setItem('inputText2', newText2); // Save input text to local storage
+  const handleLowercaseConverter = () => {
+    const { selectedText, start, end } = getSelectedTextInfo();
+    if (start === end) { // No text selected
+      setConverterInput(converterInput.toLowerCase());
+    } else {
+      replaceSelectedText(selectedText.toLowerCase());
+    }
   };
 
-  const convertToUpperCase1 = () => {
-    setInputText1(inputText1.toUpperCase());
-    setButtonClicked((prevState) => ({ ...prevState, uppercase1: true }));
+  const handleCloseToast = () => {
+    setToastMessage("");
   };
 
-  const convertToUpperCase2 = () => {
-    setInputText2(inputText2.toUpperCase());
-    setButtonClicked((prevState) => ({ ...prevState, uppercase2: true }));
+  const handleOpenModal = () => {
+    setIsModalOpen((prev) => !prev);
   };
 
-  const convertToLowerCase1 = () => {
-    setInputText1(inputText1.toLowerCase());
-    setButtonClicked((prevState) => ({ ...prevState, lowercase1: true }));
+  const handleRightClickChannel = (value) => {
+    setChannel(value); // Set the clicked value in the channel input
   };
 
-  const convertToLowerCase2 = () => {
-    setInputText2(inputText2.toLowerCase());
-    setButtonClicked((prevState) => ({ ...prevState, lowercase2: true }));
+  const handleRightClickStarName = (starName) => {
+    setStar(starName); // Set the clicked star name in the star input
   };
-
-  const convertToTitleCase1 = () => {
-    setInputText1(inputText1.replace(/\b\w/g, (char) => char.toUpperCase()));
-    setButtonClicked((prevState) => ({ ...prevState, titlecase1: true }));
-  };
-
-  const convertToTitleCase2 = () => {
-    setInputText2(inputText2.replace(/\b\w/g, (char) => char.toUpperCase()));
-    setButtonClicked((prevState) => ({ ...prevState, titlecase2: true }));
-  };
-
-  const handleCopy1 = () => {
-    navigator.clipboard.writeText(' ● ');
-    setMessage('Text "hello" copied!');
-    setButtonClicked((prevState) => ({ ...prevState, copy1: true }));
-    setTimeout(() => {
-      setMessage('');
-      setButtonClicked((prevState) => ({ ...prevState, copy1: false }));
-    }, 500);
-  };
-
-  const handleCopy2 = () => {
-    navigator.clipboard.writeText('BLACKED');
-    setMessage('Text from input 2 copied!');
-    setButtonClicked((prevState) => ({ ...prevState, copy2: true }));
-    setTimeout(() => {
-      setMessage('');
-      setButtonClicked((prevState) => ({ ...prevState, copy2: false }));
-    }, 500);
-  };
-
-  const handleCopy4 = () => {
-    const allText = inputText1 + ' ' + inputText2;
-    navigator.clipboard.writeText(allText);
-    setMessage('Text from inputs 1 and 2 copied!');
-    setButtonClicked((prevState) => ({ ...prevState, copy4: true }));
-    setTimeout(() => {
-      setMessage('');
-      setButtonClicked((prevState) => ({ ...prevState, copy4: false }));
-    }, 500);
-  };
-
-  const renderCopyButton = (buttonName, buttonText, copyHandler) => (
-    <div>
-      <button onClick={copyHandler} style={{ ...buttonStyle, backgroundColor: buttonClicked[buttonName] ? 'green' : '#007bff' }}>{buttonText}</button>
-    </div>
-  );
 
   return (
-    <div style={{ width: '100%', height: '100vh', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        {renderCopyButton('copy1', ' ● ', handleCopy1)}
-        {renderCopyButton('copy2', 'BLACKED', handleCopy2)}
-        {renderCopyButton('copy3', 'TUSHY')}
-      </div>
-      {renderCopyButton('copy4', 'Copy inputted text', handleCopy4)}
+    <div className="App">
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={handleCloseToast} />
+      )}
+      <div className="channel-copy">
+        <button className="cnl-btn" onClick={() => handleCopy(" ● ")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel(" ● "); }}>
+          ●
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("BLACKED")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("BLACKED"); }}>
+          blkd
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("BLACKEDRAW")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("BLACKEDRAW"); }}>
+          blkdraw
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("DEEPER")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("DEEPER"); }}>
+          dpr
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("MILFY")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("MILFY"); }}>
+          milfy
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("TUSHY")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("TUSHY"); }}>
+          tsy
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("TUSHYRAW")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("TUSHYRAW"); }}>
+          tsyraw
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("VIXEN")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("VIXEN"); }}>
+          vxn
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("SLAYED")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("SLAYED"); }}>
+          slayed
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("LHF")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("LHF"); }}>
+          lhf
+        </button>
+        <button className="cnl-btn" onClick={() => handleCopy("KINK")} onContextMenu={(e) => { e.preventDefault(); handleRightClickChannel("KINK"); }}>
+          kink
+        </button>
 
-      <textarea
-  value={inputText1}
-  onChange={handleInputChange1}
-  style={{
-    margin: '10px',
-    padding: '10px',
-    width: '100%',
-    display: 'block',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    fontSize: '25px',
-    fontWeight: 'bold',
-  }}
-/>
-
-       <div>
-        <button onClick={convertToUpperCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase1 ? 'green' : '#007bff' }}>Convert to UPPER</button>
-        <button onClick={convertToLowerCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase1 ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        <button onClick={convertToTitleCase1} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase1 ? 'green' : '#007bff' }}>Convert to Title Case</button>
       </div>
-      <input
-        type="text"
-        value={inputText2}
-        onChange={handleInputChange2}
-        style={{
-          margin: '10px',
-          padding: '5px',
-          width: '100%',
-          display: 'block',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
-      />
-       <div>
-        <button onClick={convertToUpperCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.uppercase2 ? 'green' : '#007bff' }}>Convert to UPPER</button>
-        <button onClick={convertToLowerCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.lowercase2 ? 'green' : '#007bff' }}>Convert to lowercase</button>
-        <button onClick={convertToTitleCase2} style={{ ...buttonStyle, backgroundColor: buttonClicked.titlecase2 ? 'green' : '#007bff' }}>Convert to Title Case</button>
+      <section className="inputs">
+        <button
+          className="copy-input"
+          onClick={() => handleCopy(`${channel} ● ${title} ● ${star}`)}
+        >
+          <FaCopy />
+        </button>
+        <div className="input-container">
+          <span>
+            <input
+              type="text"
+              name="channel"
+              value={channel}
+              onChange={handleChannelChange}
+            />
+            <button className="uppercase" onClick={handleUppercaseChannel}>
+              <BsAlphabetUppercase />
+            </button>
+          </span>
+          <span className="separator"> ● </span>
+          <span>
+            <textarea
+              rows="1"
+              name="title"
+              value={title}
+              onChange={handleTitleChange}
+            />
+          </span>
+          <span className="separator"> ● </span>
+          <span>
+            <textarea
+              rows="1"
+              name="star"
+              value={star}
+              onChange={handleStarChange}
+            />
+            <button className="uppercase" onClick={handleUppercaseStar}>
+              <BsAlphabetUppercase />
+            </button>
+          </span>
+        </div>
+      </section>
+      <div className="case-converter">
+        <div className="extra-inpt">
+          <input
+            type="text"
+            ref={converterInputRef}
+            value={converterInput}
+            onChange={handleConverterInputChange}
+          />
+          <button className="copy-btn" onClick={handleCopyConverterInput}><FaCopy /></button>
+          <button className="paste-btn" onClick={handlePasteConverterInput}><PiClipboardTextFill /></button>
+        </div>
+        <div className="buttons">
+          <button onClick={handleUppercaseConverter}>UPPERCASE</button>
+          <button onClick={handleCapitalizeConverter}>Capitalize</button>
+          <button onClick={handleLowercaseConverter}>lowercase</button>
+        </div>
       </div>
-      
-      <div style={{ position: 'fixed', top: '50px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'lightgreen', padding: '10px', borderRadius: '5px', display: message ? 'block' : 'none' }}>
-        <p style={{ margin: '0', color: 'green' }}>{message}</p>
+      <div>
+        <button onClick={handleOpenModal} className="modal-toggle-button">
+          Star Names
+        </button>
+        <div className={`modal-container ${isModalOpen ? "open" : ""}`}>
+          {isModalOpen && (
+            <StarNameModal onRightClick={handleRightClickStarName} onClose={handleOpenModal} />
+          )}
+        </div>
       </div>
     </div>
   );
 }
-
-const buttonStyle = {
-  margin: '10px',
-  padding: '8px 16px',
-  backgroundColor: '#007bff',
-  color: '#242424',
-  border: 'none',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  outline: 'none',
-};
-
-export default App;
